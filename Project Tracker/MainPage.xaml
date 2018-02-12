@@ -5,9 +5,78 @@
     xmlns:local="using:Project_Tracker"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Background="Black">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <Style x:Key="AddNewButton" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="addnewiconhover" Storyboard.TargetProperty="Visibility">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderBrush">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#40F5F5F5"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="BorderThickness">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="2"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="White"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentPresenter" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="#33FFFFFF"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Image x:Name="addnewicon" Source="ms-appx:///Assets/add-new-page.png" Visibility="Visible" Opacity=".75" Stretch="None" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                            <Image x:Name="addnewiconhover" Source="ms-appx:///Assets/add-new-page.png" Visibility="Collapsed" Opacity=".75" Stretch="None" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                            <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentTransitions="{TemplateBinding ContentTransitions}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
 
+    <Grid Background="Black">
+        <ToggleButton Style="{StaticResource SettingsButton}" VerticalAlignment="Top" HorizontalAlignment="Right" x:Name="Settings" Margin="0,25,25,0" Click="Settings_Click">
+            <ToggleButton.Content>
+                <FontIcon x:Name="Cog" FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;"/>
+            </ToggleButton.Content>
+        </ToggleButton>
+        <StackPanel x:Name="TitlePanel" Orientation="Vertical" RelativePanel.AlignHorizontalCenterWithPanel="True" HorizontalAlignment="Center" Margin="0,50,0,0" VerticalAlignment="Top">
+            <TextBlock x:Name="mainPageTitleBlock" Height="50" TextWrapping="Wrap" Text="Project Tracker" MinHeight="50" FontSize="24" TextAlignment="Center" SelectionHighlightColor="Transparent" FocusVisualSecondaryBrush="Transparent" FocusVisualPrimaryBrush="Transparent" Foreground="White"/>
+            <TextBlock x:Name="dateTimeBlock" HorizontalAlignment="Center" Height="50" Text="DateTime" TextWrapping="Wrap" VerticalAlignment="Top" Width="750" FontSize="20" FocusVisualSecondaryBrush="Transparent" Foreground="White" TextAlignment="Center" FocusVisualPrimaryBrush="Transparent"/>
+        </StackPanel>
+        <RelativePanel x:Name="ButtonPanel" HorizontalAlignment="Center" Width="800" Height="480" Margin="0,175,0,0" VerticalAlignment="Top">
+            <Button Style="{StaticResource AddNewButton}" x:Name="addNewButton" Foreground="White" Width="150" Height="150" Margin="5" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" Click="addNewButton_Click" Background="Transparent">
+                <Button.Content>
+                    <TextBlock Text="Add New Project..." TextAlignment="Center" FontSize="10" Width="130" Height="25" Margin="0,105,0,0"/>
+                </Button.Content>
+<!--                <Button.Background>
+                    <ImageBrush ImageSource="Assets/add-new-page.png" AlignmentX="Center" AlignmentY="Top" Stretch="None" Opacity="0.75"/>
+                </Button.Background>-->
+            </Button>
+        </RelativePanel>
+        <StackPanel x:Name="MessageCenter" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,25" RelativePanel.AlignHorizontalCenterWithPanel="True">
+            <TextBlock x:Name="MessageTitle" HorizontalAlignment="Center" Margin="0,0,0,0" Height="35" Width="250" VerticalAlignment="Top" Text="Message Center" TextAlignment="Center" FontSize="20" TextDecorations="Underline" Foreground="White"/>
+            <ScrollViewer x:Name="StatusViewer" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Height="200" Width="1000" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <TextBlock x:Name="statusBlock" HorizontalAlignment="Center" Height="1000" TextWrapping="WrapWholeWords" Text="" VerticalAlignment="Top" Width="1000" FontSize="12" TextAlignment="Center"/>
+            </ScrollViewer>
+        </StackPanel>
     </Grid>
 </Page>
