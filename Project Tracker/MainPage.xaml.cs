@@ -6,11 +6,13 @@ using System.Runtime.Serialization;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Popups;
+using Windows.UI.Text;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml.Shapes;
 
 namespace Project_Tracker
 {
@@ -77,6 +79,7 @@ namespace Project_Tracker
 				}
 			}
 		}
+
 		//Page Functions
 		private async void LoadData()
 		{
@@ -145,28 +148,64 @@ namespace Project_Tracker
 			{
 				foreach (var project in Globals.projects)
 				{
+					int numTasks = 0;
+
 					if (project != null)
 					{
+						foreach (var t in Globals.tasks)
+						{
+							if ((t.projectName == project.projectName) && (t.projCompleted == false))
+								numTasks++;
+						}
+						RelativePanel panel = new RelativePanel
+						{
+							Margin = new Thickness(0, 105, 0, 0),
+							Width = 130,
+							Height = 25,
+						};
+						TextBlock blockName = new TextBlock
+						{
+							Text = project.projectName,
+							TextAlignment = TextAlignment.Center,
+							TextWrapping = TextWrapping.Wrap,
+							FontSize = 10,
+							Margin = new Thickness(25,0,0,0),
+							Width = 80,
+						};
+						RelativePanel.SetAlignLeftWithPanel(blockName, true);
+						panel.Children.Add(blockName);
+						if (numTasks != 0)
+						{
+							TextBlock blockTasks = new TextBlock
+							{
+								Text = numTasks.ToString(),
+								TextAlignment = TextAlignment.Center,
+								Margin = new Thickness(-1, 2, 0, 0),
+								FontSize = 10,
+								Width = 20,
+							};
+							Brush shapeColor = Application.Current.Resources["SystemControlHighlightAccentBrush"] as SolidColorBrush;
+							Ellipse shape = new Ellipse
+							{
+								Width = 20,
+								Height = 20,
+								Fill = shapeColor,
+							};
+							RelativePanel.SetAlignRightWithPanel(shape, true);
+							RelativePanel.SetAlignRightWithPanel(blockTasks, true);
+							panel.Children.Add(shape);
+							panel.Children.Add(blockTasks);
+						}
+
 						Button newButton = new Button
 						{
 							Name = project.projectName.Replace(" ", "") + "Button",
-							Content = new TextBlock
-							{
-								TextAlignment = TextAlignment.Center,
-								TextWrapping = TextWrapping.Wrap,
-								Text = project.projectName,
-								Width = 130,
-								Height = 25,
-								Margin = new Thickness(0, 105, 0, 0),
-								FontSize = 10,
-
-							},
+							Content = panel,
 							Foreground = new SolidColorBrush(Windows.UI.Colors.White),
 							Width = 150,
 							Height = 150,
 							Margin = new Thickness(5),
 							TabIndex = tabIndex,
-							//Background = backImg,
 							Style = style,
 						};
 						newButton.Click += ProjectButton_Click;
@@ -290,8 +329,9 @@ namespace Project_Tracker
 		private void ProjectButton_Click(object sender, RoutedEventArgs e)
 		{
 			Button buttonClicked = (sender as Button);
-			TextBlock buttonContents = buttonClicked.Content as TextBlock;
-			Globals.currentProject = buttonContents.Text;
+			RelativePanel buttonContents = buttonClicked.Content as RelativePanel;
+			TextBlock buttonName = buttonContents.Children[0] as TextBlock;
+			Globals.currentProject = buttonName.Text;
 			this.Frame.Navigate(typeof(Projects.ProjectShell));
 		}
 
