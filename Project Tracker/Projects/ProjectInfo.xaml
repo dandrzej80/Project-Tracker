@@ -15,7 +15,7 @@
             <TextBlock x:Name="NameTitle" HorizontalAlignment="Left" Height="35" Margin="50,75,0,0" Text="Project Name:" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" FontSize="20" TextAlignment="Left" IsTapEnabled="False" IsRightTapEnabled="False" IsHoldingEnabled="False" IsDoubleTapEnabled="False"/>
             <TextBox x:Name="ProjNameBox" HorizontalAlignment="Left" Height="35" Margin="200,75,0,0" VerticalAlignment="Top" Width="350" FontSize="18" TextAlignment="Left" TabIndex="1" GotFocus="ProjNameBox_GotFocus" LostFocus="ProjNameBox_LostFocus"/>
             <TextBlock Text="Project Image:" HorizontalAlignment="Left" Height="35" Margin="50,125,0,0" VerticalAlignment="Top" Width="150" FontSize="20" TextAlignment="Left"/>
-            <TextBlock x:Name="ImageFileBlock" Text="No Picture Selected..." HorizontalAlignment="Left" Height="25" Width="250" Margin="200,130,0,0" FontSize="18" TextAlignment="Left"/>
+            <TextBlock x:Name="ImageFileBlock" Text="No Picture Selected..." HorizontalAlignment="Left" Height="25" Width="275" Margin="200,130,0,0" FontSize="18" TextAlignment="Left"/>
             <Button x:Name="ImageButton" Content="Change" HorizontalAlignment="Left" VerticalAlignment="Top" Height="35" Width="100" Margin="200,175,0,0" FontSize="16" VerticalContentAlignment="Center" Click="ImageButton_Click"/>
             <Image x:Name="ImageCanvas" HorizontalAlignment="Left" Height="100" Width="75" Margin="475,125,0,0"/>
             <RelativePanel x:Name="WebSourcePanel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="1000" Margin="50,250,0,0">

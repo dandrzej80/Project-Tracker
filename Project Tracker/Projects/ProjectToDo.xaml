@@ -19,7 +19,9 @@
             <RelativePanel x:Name="ShowListPanel" RelativePanel.Below="AddTaskButton" Margin="50,50,0,0" Width="950" Height="500" Visibility="Visible">
                 <TextBlock Text="Completed?" Width="125" Height="35" FontSize="20" TextDecorations="Underline"/>
                 <TextBlock Text="Task" Margin="130,0,0,0" Width="820" Height="35" FontSize="20" TextDecorations="Underline"/>
-                <RelativePanel x:Name="ListPanel" Margin="0,40,0,0" Width="950" Height="1000"></RelativePanel>
+                <ScrollViewer Margin="0,40,0,0" VerticalScrollBarVisibility="Auto" VerticalScrollMode="Enabled">
+                    <RelativePanel x:Name="ListPanel" Width="950" Height="1000"></RelativePanel>
+                </ScrollViewer>
             </RelativePanel>
         </RelativePanel>
     </Grid>

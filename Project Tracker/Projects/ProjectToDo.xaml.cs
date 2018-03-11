@@ -13,7 +13,7 @@ namespace Project_Tracker.Projects
 
 		public ProjectToDo()
 		{
-			this.InitializeComponent();
+			InitializeComponent();
 		}
 		public void Link_Click(object sender, RoutedEventArgs e)
 		{
@@ -28,14 +28,19 @@ namespace Project_Tracker.Projects
 
 			Globals.DisplayTasks(ListPanel);
 
-			foreach (HyperlinkButton button in FindVisualChildren<HyperlinkButton>(this))
+			foreach (var c in ListPanel.Children)
 			{
-				button.Click += Link_Click;
-			}
-			foreach (CheckBox check in FindVisualChildren<CheckBox>(this))
-			{
-				check.Unchecked += Check_Unchecked;
-				check.Checked += Check_Checked;
+				if(c.GetType() == typeof(HyperlinkButton))
+				{
+					HyperlinkButton link = c as HyperlinkButton;
+					link.Click += Link_Click;
+				}
+				if (c.GetType() == typeof(CheckBox))
+				{
+					CheckBox check = c as CheckBox;
+					check.Unchecked += Check_Unchecked;
+					check.Checked += Check_Checked;
+				}
 			}
 		}
 		private void Check_Checked(object sender, RoutedEventArgs e)
@@ -83,25 +88,6 @@ namespace Project_Tracker.Projects
 			//Sort and Redisplay List
 			Globals.DisplayTasks(ListPanel);
 			Frame.Navigate(typeof(ProjectToDo));
-		}
-		public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
-		{
-			if (depObj != null)
-			{
-				for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
-				{
-					DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
-					if (child != null && child is T)
-					{
-						yield return (T)child;
-					}
-
-					foreach (T childOfChild in FindVisualChildren<T>(child))
-					{
-						yield return childOfChild;
-					}
-				}
-			}
 		}
 		private void AddTaskButton_Click(object sender, RoutedEventArgs e)
 		{
